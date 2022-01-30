@@ -1,4 +1,7 @@
 plugins {
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'org.openapi.generator' version "4.3.1"
     id 'java'
 }
 
@@ -7,21 +10,29 @@ repositories {
 }
 
 dependencies {
-//    swaggerCodegen 'org.springframework.boot:spring-boot-starter-web:2.1.3.RELEASE'
-//    swaggerCodegen 'io.swagger.core.v3:swagger-annotations:2.1.12'
-//    swaggerCodegen 'io.springfox:springfox-swagger2:2.9.2'
-//    swaggerCodegen 'org.openapitools:openapi-generator-cli:3.3.4'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "io.swagger.parser.v3:swagger-parser:2.0.20"
+    implementation "org.openapitools:jackson-databind-nullable:0.2.1"
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 }
 
-//swaggerSources {
-//    petstore {
-//        inputFile = file('petstore.yaml')
-//        code {
-//            language = 'spring'
-//        }
-//    }
-//}
-//
-//compileJava.dependsOn swaggerSources.petstore.code
-//sourceSets.main.java.srcDir "${swaggerSources.petstore.code.outputDir}/src/main/java"
-//sourceSets.main.resources.srcDir "${swaggerSources.petstore.code.outputDir}/src/main/resources"
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$projectDir/src/main/resources/petstore.yml"
+    outputDir = "$buildDir/generated"
+    apiPackage = "org.guardiandev.helloservice.api"
+    invokerPackage = "org.guardiandev.helloservice"
+    modelPackage = "org.guardiandev.helloservice.models"
+    configOptions = [
+            dateLibrary: "java8",
+            interfaceOnly: "true",
+    ]
+}
+
+compileJava.dependsOn tasks.openApiGenerate
+sourceSets.main.java.srcDir "$buildDir/generated/src/main/java"
+sourceSets.main.resources.srcDir "$buildDir/generated/src/main/resources"
