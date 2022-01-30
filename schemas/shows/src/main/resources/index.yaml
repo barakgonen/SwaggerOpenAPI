@@ -13,6 +13,7 @@ security:
 paths:
   /artists:
     get:
+      operationId: getAllArtists
       description: Returns a list of artists
       parameters:
         - name: limit
@@ -41,12 +42,11 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
+                $ref:
+                  '#/components/schemas/Message'
 
     post:
+      operationId: postNewArtist
       description: Lets a user post a new artist
       requestBody:
         required: true
@@ -64,13 +64,12 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
+                $ref:
+                  '#/components/schemas/Message'
 
   /artists/{username}:
     get:
+      operationId: getArtistByUserName
       description: Obtain information about an artist from his or her unique username
       parameters:
         - name: username
@@ -78,39 +77,27 @@ paths:
           required: true
           schema:
             type: string
-
       responses:
         '200':
           description: Successfully returned an artist
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  artist_name:
-                    type: string
-                  artist_genre:
-                    type: string
-                  albums_recorded:
-                    type: integer
+                $ref: '#/components/schemas/Artist'
 
         '400':
           description: Invalid request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
+                $ref:
+                  '#/components/schemas/Message'
 
 components:
   securitySchemes:
     BasicAuth:
       type: http
       scheme: basic
-
-  #  ----- Added lines  ----------------------------------------
   schemas:
     Artist:
       type: object
@@ -125,4 +112,24 @@ components:
           type: integer
         username:
           type: string
+    Concert:
+      type: object
+      required:
+        - performingArtist
+        - location
+      properties:
+        performingArtist:
+          type:
+            Artist
+        location:
+          $ref:
+            '../../../../baseModels/src/main/resources/index.yaml#/components/schemas/Coordinate'
+    Message:
+      type: object
+      required:
+        - msgData
+      properties:
+        msgData:
+          type: string
+
   #  ---- /Added lines  ----------------------------------------

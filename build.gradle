@@ -1,5 +1,7 @@
 plugins {
-    id 'org.hidetake.swagger.generator' version '2.19.2'
+//    id 'org.springframework.boot' version '2.3.2.RELEASE'
+//    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+//    id 'org.openapi.generator' version "4.3.1"
 }
 
 repositories {
@@ -7,6 +9,7 @@ repositories {
 }
 
 dependencies {
-    swaggerCodegen 'io.swagger:swagger-codegen-cli:2.4.25'             // Swagger Codegen V2
-    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.32'  // or Swagger Codegen V3
+//    implementation 'org.springframework.boot:spring-boot-starter-web'
+//    implementation "io.swagger.parser.v3:swagger-parser:2.0.20"
+//    implementation "org.openapitools:jackson-databind-nullable:0.2.1"
 }

@@ -1,14 +1,5 @@
-pluginManagement{
-    plugins {
-        repositories {
-            maven {
-                url = "https://plugins.gradle.org/m2/"
-            }
-        }
-    }
-}
 
 rootProject.name = 'SwaggerOpenAPI'
-include(':schemas:baseObjects')
-//include(':schemas:shows')
+include(':schemas:baseModels')
+include(':schemas:shows')
 //include(':schemas:cities')

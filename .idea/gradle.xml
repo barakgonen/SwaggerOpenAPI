@@ -9,7 +9,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/schemas" />
-            <option value="$PROJECT_DIR$/schemas/baseObjects" />
+            <option value="$PROJECT_DIR$/schemas/baseModels" />
+            <option value="$PROJECT_DIR$/schemas/shows" />
           </set>
         </option>
       </GradleProjectSettings>
