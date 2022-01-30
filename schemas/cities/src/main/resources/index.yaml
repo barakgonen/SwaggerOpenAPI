@@ -1,0 +1,120 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Simple API
+  description: A simple API to illustrate OpenAPI concepts
+
+servers:
+  - url: https://example.io/v1
+
+security:
+  - BasicAuth: []
+
+paths:
+  /cities:
+    get:
+      operationId: getAllCities
+      description: Returns a list of cities
+      parameters:
+        - name: limit
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          description: Specifies the page number of the cities to be displayed
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully returned a list of cities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  #  ----- Added line  ----------------------------------------
+                  $ref: '#/components/schemas/City'
+                  #  ---- /Added line  ----------------------------------------
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/Message'
+
+    post:
+      operationId: postNewCity
+      description: Lets a user post a new city
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              #  ----- Added line  ----------------------------------------
+              $ref: '#/components/schemas/City'
+              #  ---- /Added line  ----------------------------------------
+      responses:
+        '200':
+          description: Successfully created a new city
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/Message'
+
+  /cities/{cityName}:
+    get:
+      operationId: getCityByName
+      description: Obtain information about a city from its name
+      parameters:
+        - name: cityName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully returned a city
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/City'
+
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/Message'
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    City:
+      type: object
+      required:
+        - cityName
+        - cityCenterLocation
+      properties:
+        cityName:
+          type: string
+        cityCenterLocation:
+          $ref:
+            '../../../../baseModels/src/main/resources/index.yaml#/components/schemas/Coordinate'
+    Message:
+      type: object
+      required:
+        - msgData
+      properties:
+        msgData:
+          type: string
+
+  #  ---- /Added lines  ----------------------------------------

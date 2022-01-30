@@ -51,7 +51,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             artifact sourceJar // Publish the output of the sourceJar task
-            artifact "$buildDir/libs/$rootProject.name-sources.jar"
+            artifact "$buildDir/libs/$rootProject.name-$version-sources.jar"
             artifact source: sourceJar, classifier: 'src', extension: 'zip'
         }
     }
