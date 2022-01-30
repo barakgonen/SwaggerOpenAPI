@@ -1,0 +1,8 @@
+{
+  "modelPackage": "org.mashov.base.objects",
+  "apiPackage": "org.mashov.base.objects.api",
+  "invokerPackage": "base.objects",
+  "library": "spring-mvc",
+  "dateLibrary": "java8",
+  "hideGenerationTimestamp": true
+}
