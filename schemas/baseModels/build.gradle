@@ -1,0 +1,58 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'org.openapi.generator' version "4.3.1"
+    id 'maven-publish'
+    id 'maven'
+    id 'java'
+}
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "io.swagger.parser.v3:swagger-parser:2.0.20"
+    implementation "org.openapitools:jackson-databind-nullable:0.2.1"
+}
+group='org.mashov.models'
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$projectDir/src/main/resources/index.yaml"
+    outputDir = "$buildDir/generated"
+    invokerPackage = "org.mashov.models.base.objects"
+    modelPackage = "org.mashov.models.base.objects"
+    configOptions = [
+            dateLibrary            : "java8",
+            interfaceOnly          : "true",
+            skipDefaultInterface   : "true",
+            generateSupportingFiles: "false"
+    ]
+}
+
+bootJar.enabled = false
+compileJava.dependsOn tasks.openApiGenerate
+sourceSets.main.java.srcDir "$buildDir/generated/src/main/java/org/mashov/models/"
+sourceSets.main.resources.srcDir "$buildDir/generated/src/main/resources"
+
+java {
+    withSourcesJar()
+}
+
+task sourceJar(type: Jar) {
+    archiveClassifier = "sources"
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact sourceJar // Publish the output of the sourceJar task
+            artifact "$buildDir/libs/$rootProject.name-sources.jar"
+            artifact source: sourceJar, classifier: 'src', extension: 'zip'
+        }
+    }
+}

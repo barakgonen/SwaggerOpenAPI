@@ -1,0 +1,61 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Mashov base objects
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8080/
+
+components:
+  schemas:
+    Coordinate:
+      type: object
+      required:
+        - lat
+        - lon
+      properties:
+        lat:
+          type: number
+        lon:
+          type: number
+    Velocity:
+      type: object
+      required:
+        - vx
+        - vy
+        - vz
+      properties:
+        vx:
+          type: number
+        vy:
+          type: number
+        vz:
+          type: number
+    TimeTag:
+      type: object
+      required:
+        - seconds
+        - millis
+      properties:
+        code:
+          type: integer
+          format: int64
+        millis:
+          type: integer
+          format: int32
+
+paths:
+  /hello:
+    description: Returns a list of artists
+    parameters:
+      - name: limit
+        in: query
+        description: Limits the number of items on a page
+        schema:
+          type: integer
+      - name: offset
+        in: query
+        description: Specifies the page number of the artists to be displayed
+        schema:
+          type: integer
